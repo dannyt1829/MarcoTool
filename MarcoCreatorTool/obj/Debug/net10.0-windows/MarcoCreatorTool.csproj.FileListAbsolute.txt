@@ -1,0 +1,16 @@
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\bin\Debug\net10.0-windows\MarcoCreatorTool.exe
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\bin\Debug\net10.0-windows\MarcoCreatorTool.deps.json
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\bin\Debug\net10.0-windows\MarcoCreatorTool.runtimeconfig.json
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\bin\Debug\net10.0-windows\MarcoCreatorTool.dll
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\bin\Debug\net10.0-windows\MarcoCreatorTool.pdb
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.Form1.resources
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.csproj.GenerateResource.cache
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.AssemblyInfoInputs.cache
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.AssemblyInfo.cs
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.csproj.CoreCompileInputs.cache
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.dll
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\refint\MarcoCreatorTool.dll
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.pdb
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.genruntimeconfig.cache
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\ref\MarcoCreatorTool.dll
