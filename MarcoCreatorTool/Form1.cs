@@ -1,10 +1,12 @@
 using MarcoCreatorTool;
+using System.Runtime.InteropServices;
 
 namespace MarcoCreatorTool
 {
     public partial class Form1 : Form
     {
         private List<RecordedAction> recordedActions = new List<RecordedAction>();
+
         public Form1()
         {
             InitializeComponent();
@@ -17,6 +19,7 @@ namespace MarcoCreatorTool
 
         private void recordButton_Click(object sender, EventArgs e)
         {
+            // Create new recorded action
             RecordedAction action = new RecordedAction
             {
                 Type = ActionType.MouseClick,
@@ -25,24 +28,36 @@ namespace MarcoCreatorTool
                 Delay = 500
             };
 
+            // Add the action to the list
             recordedActions.Add(action);
             MessageBox.Show($"Added: {action.Type} at ({action.X}, {action.Y})");
         }
 
-        private void play_Click(object sender, EventArgs e)
+        private async void play_Click(object sender, EventArgs e)
         {
+            // If no actions were recorded, return
             if (recordedActions.Count == 0)
             {
                 MessageBox.Show("No actions recorded.");
                 return;
             }
 
+            // Play back the recorded actions
             foreach (var action in recordedActions)
             {
                 if (action.Type == ActionType.MouseClick)
                 {
+                    // Mouse click action
                     MessageBox.Show($"Playing: {action.Type} at ({action.X}, {action.Y}) with delay {action.Delay}ms");
-                    Cursor.Position = new Point(action.X, action.Y);
+                    await Task.Delay(action.Delay);
+                    InputSimulator.Click(action.X, action.Y);
+                }
+                else if (action.Type == ActionType.KeyPress)
+                {
+                    // Key press action
+                    MessageBox.Show($"Playing: {action.Type} with key {action.Key} and delay {action.Delay}ms");
+                    await Task.Delay(action.Delay);
+
                 }
             }
         }
