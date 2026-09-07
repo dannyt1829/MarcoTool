@@ -20,7 +20,7 @@ namespace MarcoCreatorTool
         private void recordButton_Click(object sender, EventArgs e)
         {
             // Create new recorded action
-            RecordedAction action = new RecordedAction
+            RecordedAction action1 = new RecordedAction
             {
                 Type = ActionType.MouseClick,
                 X = 100,
@@ -28,9 +28,18 @@ namespace MarcoCreatorTool
                 Delay = 500
             };
 
+            RecordedAction action2 = new RecordedAction
+            {
+                Type = ActionType.KeyPress,
+                Key = Keys.K,
+                Delay = 500
+            };
+
             // Add the action to the list
-            recordedActions.Add(action);
-            MessageBox.Show($"Added: {action.Type} at ({action.X}, {action.Y})");
+            recordedActions.Add(action1);
+            recordedActions.Add(action2);
+            MessageBox.Show($"Added: {action1.Type} at ({action1.X}, {action1.Y})");
+            MessageBox.Show($"Added: {action2.Type} for key {action2.Key}");
         }
 
         private async void play_Click(object sender, EventArgs e)
@@ -48,15 +57,14 @@ namespace MarcoCreatorTool
                 if (action.Type == ActionType.MouseClick)
                 {
                     // Mouse click action
-                    MessageBox.Show($"Playing: {action.Type} at ({action.X}, {action.Y}) with delay {action.Delay}ms");
                     await Task.Delay(action.Delay);
                     InputSimulator.Click(action.X, action.Y);
                 }
                 else if (action.Type == ActionType.KeyPress)
                 {
                     // Key press action
-                    MessageBox.Show($"Playing: {action.Type} with key {action.Key} and delay {action.Delay}ms");
                     await Task.Delay(action.Delay);
+                    InputSimulator.KeyPress(action.Key);
 
                 }
             }
