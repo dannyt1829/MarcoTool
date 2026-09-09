@@ -33,9 +33,9 @@ namespace MarcoCreatorTool
             keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
         }
 
-        public static void Delay(int milliseconds)
+        public static async Task Delay(int milliseconds)
         {
-            
+            await Task.Delay(milliseconds);
         }
     }
 }
