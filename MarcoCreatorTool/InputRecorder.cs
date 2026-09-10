@@ -58,7 +58,8 @@ namespace MarcoCreatorTool
             if (nCode >= 0 && wParam == (IntPtr)WH_KEYDOWN)
             {
                 HookInfo hookInfo = Marshal.PtrToStructure<HookInfo>(lParam);
-                Console.WriteLine($"Key pressed: {hookInfo.vkCode}");
+                Keys key = (Keys)hookInfo.vkCode;
+                MessageBox.Show($"Typed: {key}");
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
