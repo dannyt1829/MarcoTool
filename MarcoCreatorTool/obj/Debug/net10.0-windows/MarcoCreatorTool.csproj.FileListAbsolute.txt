@@ -15,3 +15,4 @@ C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-
 C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.genruntimeconfig.cache
 C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\ref\MarcoCreatorTool.dll
 C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCreatorTool.sourcelink.json
+C:\Users\realp\source\repos\MarcoCreatorTool\MarcoCreatorTool\obj\Debug\net10.0-windows\MarcoCre.DB9236DF.Up2Date
