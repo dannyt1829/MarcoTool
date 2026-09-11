@@ -21,14 +21,16 @@ namespace MarcoCreatorTool
         private IntPtr _keyboardHookID = IntPtr.Zero;
         private IntPtr _mouseHookID = IntPtr.Zero;
 
+        private uint _lastActionTime = 0;
+
         // Stores mouse hook data
         [StructLayout(LayoutKind.Sequential)]
         private struct KBDLLHOOKSTRUCT
         {
-            public int vkCode;
-            public int scanCode;
-            public int flags;
-            public int time;
+            public uint vkCode;
+            public uint scanCode;
+            public uint flags;
+            public uint time;
             public IntPtr dwExtraInfo;
         }
 
@@ -44,9 +46,9 @@ namespace MarcoCreatorTool
         private struct MSLLHOOKSTRUCT
         {
             public POINT pt;
-            public int mouseData;
-            public int flags;
-            public int time;
+            public uint mouseData;
+            public uint flags;
+            public uint time;
             public IntPtr dwExtraInfo;
         }
 
@@ -97,12 +99,16 @@ namespace MarcoCreatorTool
             {
                 KBDLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
                 Keys key = (Keys)hookInfo.vkCode;
-                
+
+                uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
+
+                _lastActionTime = hookInfo.time;
+
                 _recordedActions.Add(new RecordedAction
                 {
                     Type = ActionType.KeyPress,
                     Key = key,
-                    Delay = 1000
+                    Delay = (int)delay
                 });
 
                 MessageBox.Show($"Recorded: {key}");
@@ -115,13 +121,17 @@ namespace MarcoCreatorTool
             if (nCode >= 0 && wParam == (IntPtr)WM_LBUTTONDOWN)
             {
                 MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-                
+
+                uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
+
+                _lastActionTime = hookInfo.time;
+
                 _recordedActions.Add(new RecordedAction
                 {
                     Type = ActionType.MouseClick,
                     X = hookInfo.pt.x,
                     Y = hookInfo.pt.y,
-                    Delay = 1000
+                    Delay = (int)delay
                 });
             }
 
