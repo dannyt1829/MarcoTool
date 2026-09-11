@@ -10,17 +10,20 @@ namespace MarcoCreatorTool
     {
         private List<RecordedAction> _recordedActions = new List<RecordedAction>();
         private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
-        private LowLevelMouseProc _proc;
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+        private LowLevelMouseProc _mouseProc;
+        private LowLevelKeyboardProc _keyboardProc;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_KEYDOWN = 0x0100;
         private const int WH_MOUSE_LL = 14;
         private const int WM_LBUTTONDOWN = 0x0201;
 
-        private IntPtr _hookID = IntPtr.Zero;
-        
+        private IntPtr _keyboardHookID = IntPtr.Zero;
+        private IntPtr _mouseHookID = IntPtr.Zero;
 
+        // Stores mouse hook data
         [StructLayout(LayoutKind.Sequential)]
-        private struct HookInfo
+        private struct KBDLLHOOKSTRUCT
         {
             public int vkCode;
             public int scanCode;
@@ -29,8 +32,29 @@ namespace MarcoCreatorTool
             public IntPtr dwExtraInfo;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT
+        {
+            public int x;
+            public int y;
+        }
+
+        // Stores mouse hook data 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MSLLHOOKSTRUCT
+        {
+            public POINT pt;
+            public int mouseData;
+            public int flags;
+            public int time;
+            public IntPtr dwExtraInfo;
+        }
+
         [DllImport("user32.dll")]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll")]
         private static extern bool UnhookWindowsHookEx(IntPtr hhk);
@@ -44,17 +68,22 @@ namespace MarcoCreatorTool
         public void Start()
         {
             _recordedActions.Clear();
-            _proc = HookCallback;
+            _keyboardProc = KeyboardHookCallback;
+            _mouseProc = MouseHookCallback;
+
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
-                _hookID = SetWindowsHookEx(WH_KEYBOARD_LL, _proc, GetModuleHandle(curModule.ModuleName), 0);
+                IntPtr moduleHandle = GetModuleHandle(curModule.ModuleName);
+                _keyboardHookID = SetWindowsHookEx(WH_KEYBOARD_LL, _keyboardProc, moduleHandle, 0);
+                _mouseHookID = SetWindowsHookEx(WH_MOUSE_LL, _mouseProc, moduleHandle, 0);
             }
         }
 
         public void Stop()
         {
-            UnhookWindowsHookEx(_hookID);
+            UnhookWindowsHookEx(_keyboardHookID);
+            UnhookWindowsHookEx(_mouseHookID);
         }
 
         public List<RecordedAction> GetRecordedActions()
@@ -62,11 +91,11 @@ namespace MarcoCreatorTool
             return _recordedActions;
         }
 
-        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 && wParam == (IntPtr)WH_KEYDOWN)
             {
-                HookInfo hookInfo = Marshal.PtrToStructure<HookInfo>(lParam);
+                KBDLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
                 Keys key = (Keys)hookInfo.vkCode;
                 
                 _recordedActions.Add(new RecordedAction
@@ -78,7 +107,25 @@ namespace MarcoCreatorTool
 
                 MessageBox.Show($"Recorded: {key}");
             }
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+            return CallNextHookEx(_mouseHookID, nCode, wParam, lParam);
+        }
+
+        private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        { 
+            if (nCode >= 0 && wParam == (IntPtr)WM_LBUTTONDOWN)
+            {
+                MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
+                
+                _recordedActions.Add(new RecordedAction
+                {
+                    Type = ActionType.MouseClick,
+                    X = hookInfo.pt.x,
+                    Y = hookInfo.pt.y,
+                    Delay = 1000
+                });
+            }
+
+            return CallNextHookEx(_mouseHookID, nCode, wParam, lParam);
         }
     }
 }

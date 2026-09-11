@@ -40,7 +40,7 @@ namespace MarcoCreatorTool
         private async void play_Click(object sender, EventArgs e)
         {
             // If no actions were recorded, return
-            
+
             if (recordedActions.Count == 0)
             {
                 MessageBox.Show("No actions recorded.");

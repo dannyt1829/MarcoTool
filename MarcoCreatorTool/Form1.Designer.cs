@@ -30,8 +30,6 @@
         {
             recordButton = new Button();
             play = new Button();
-            button1 = new Button();
-            button2 = new Button();
             SuspendLayout();
             // 
             // recordButton
@@ -54,32 +52,12 @@
             play.UseVisualStyleBackColor = true;
             play.Click += play_Click;
             // 
-            // button1
-            // 
-            button1.Location = new Point(174, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 75);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(255, 12);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 75);
-            button2.TabIndex = 3;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(354, 99);
-            Controls.Add(button2);
-            Controls.Add(button1);
             Controls.Add(play);
             Controls.Add(recordButton);
             Name = "Form1";
@@ -93,6 +71,5 @@
         private Button recordButton;
         private Button play;
         private Button button1;
-        private Button button2;
     }
 }
