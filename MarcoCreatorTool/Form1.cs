@@ -33,38 +33,14 @@ namespace MarcoCreatorTool
                 inputRecorder.Stop();
                 _isRecording = false;
                 recordButton.Text = "Record";
+                recordedActions = inputRecorder.GetRecordedActions();
             }
-
-            // Create new recorded action
-
-
-            /*
-            RecordedAction action1 = new RecordedAction
-            {
-                Type = ActionType.MouseClick,
-                X = 100,
-                Y = 100,
-                Delay = 500
-            };
-
-            RecordedAction action2 = new RecordedAction
-            {
-                Type = ActionType.KeyPress,
-                Key = Keys.K,
-                Delay = 500
-            };
-
-            // Add the action to the list
-            recordedActions.Add(action1);
-            recordedActions.Add(action2);
-            MessageBox.Show($"Added: {action1.Type} at ({action1.X}, {action1.Y})");
-            MessageBox.Show($"Added: {action2.Type} for key {action2.Key}");
-            */
         }
 
         private async void play_Click(object sender, EventArgs e)
         {
             // If no actions were recorded, return
+            
             if (recordedActions.Count == 0)
             {
                 MessageBox.Show("No actions recorded.");

@@ -8,13 +8,16 @@ namespace MarcoCreatorTool
 {
     public class InputRecorder
     {
+        private List<RecordedAction> _recordedActions = new List<RecordedAction>();
         private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
-
+        private LowLevelMouseProc _proc;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_KEYDOWN = 0x0100;
+        private const int WH_MOUSE_LL = 14;
+        private const int WM_LBUTTONDOWN = 0x0201;
 
         private IntPtr _hookID = IntPtr.Zero;
-        private LowLevelMouseProc _proc;
+        
 
         [StructLayout(LayoutKind.Sequential)]
         private struct HookInfo
@@ -40,6 +43,7 @@ namespace MarcoCreatorTool
 
         public void Start()
         {
+            _recordedActions.Clear();
             _proc = HookCallback;
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
@@ -53,13 +57,26 @@ namespace MarcoCreatorTool
             UnhookWindowsHookEx(_hookID);
         }
 
+        public List<RecordedAction> GetRecordedActions()
+        {
+            return _recordedActions;
+        }
+
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 && wParam == (IntPtr)WH_KEYDOWN)
             {
                 HookInfo hookInfo = Marshal.PtrToStructure<HookInfo>(lParam);
                 Keys key = (Keys)hookInfo.vkCode;
-                MessageBox.Show($"Typed: {key}");
+                
+                _recordedActions.Add(new RecordedAction
+                {
+                    Type = ActionType.KeyPress,
+                    Key = key,
+                    Delay = 1000
+                });
+
+                MessageBox.Show($"Recorded: {key}");
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
