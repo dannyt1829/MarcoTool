@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarcoCreatorTool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+570854a0bf8bbc264840fae419ce16787f33ec4f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3756d88e7258cfcef8ae5df47db64d7c9795220")]
 [assembly: System.Reflection.AssemblyProductAttribute("MarcoCreatorTool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MarcoCreatorTool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

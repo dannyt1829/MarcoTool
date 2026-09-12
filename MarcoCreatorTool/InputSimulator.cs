@@ -15,6 +15,8 @@ namespace MarcoCreatorTool
 
         private const uint MOUSEEVENTF_LEFTDOWN = 0x02;
         private const uint MOUSEEVENTF_LEFTUP = 0x04;
+        private const uint MOUSEEVENTF_RIGHTDOWN = 0x08;
+        private const uint MOUSEEVENTF_RIGHTUP = 0x10;
         private const uint KEYEVENTF_KEYUP = 0x0002;
 
         public static void Click(int x, int y)
@@ -23,6 +25,34 @@ namespace MarcoCreatorTool
             Cursor.Position = new Point(x, y);
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+        }
+
+        public static void LMouseDown(int x, int y)
+        {
+            // Mouse down at specified coordinates
+            Cursor.Position = new Point(x, y);
+            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+        }
+
+        public static void LMouseUp(int x, int y)
+        {
+            // Mouse up at specified coordinates
+            Cursor.Position = new Point(x, y);
+            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+        }
+
+        public static void RMouseDown(int x, int y)
+        {
+            // Mouse down at specified coordinates
+            Cursor.Position = new Point(x, y);
+            mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+        }
+
+        public static void RMouseUp(int x, int y)
+        {
+            // Mouse up at specified coordinates
+            Cursor.Position = new Point(x, y);
+            mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
         }
 
         public static void KeyPress(Keys key)

@@ -21,9 +21,12 @@ namespace MarcoCreatorTool
         MouseClick,
         MouseMove,
         KeyPress,
-        MouseDown,
-        MouseUp,
+        LMouseDown,
+        LMouseUp,
+        RMouseDown,
+        RMouseUp,
         KeyDown,
-        KeyUp
+        KeyUp,
+        Placeholder // Placeholder for future action types
     }
 }

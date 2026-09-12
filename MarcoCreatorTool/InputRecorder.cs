@@ -20,6 +20,11 @@ namespace MarcoCreatorTool
         private const int WM_SYSKEYUP = 0x0105;
         private const int WH_MOUSE_LL = 14;
         private const int WM_LBUTTONDOWN = 0x0201;
+        private const int WM_LBUTTONUP = 0x0202;
+        private const int WM_RBUTTONDOWN = 0x0204;
+        private const int WM_RBUTTONUP = 0x0205;
+
+
 
         private IntPtr _keyboardHookID = IntPtr.Zero;
         private IntPtr _mouseHookID = IntPtr.Zero;
@@ -121,17 +126,23 @@ namespace MarcoCreatorTool
 
         private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         { 
-            if (nCode >= 0 && wParam == (IntPtr)WM_LBUTTONDOWN)
+            if (nCode >= 0)
             {
+                //TODO: Add mouse move, mouse wheel, and extra mouse events
+
                 MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
 
                 uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
 
                 _lastActionTime = hookInfo.time;
+                _actionType = (wParam == (IntPtr)WM_LBUTTONDOWN) ? ActionType.LMouseDown 
+                            : (wParam == (IntPtr)WM_LBUTTONUP) ? ActionType.LMouseUp 
+                            : (wParam == (IntPtr)WM_RBUTTONDOWN) ? ActionType.RMouseDown 
+                            : (wParam == (IntPtr)WM_RBUTTONUP) ? ActionType.RMouseUp : ActionType.Placeholder;
 
                 _recordedActions.Add(new RecordedAction
                 {
-                    Type = ActionType.MouseClick,
+                    Type = _actionType,
                     X = hookInfo.pt.x,
                     Y = hookInfo.pt.y,
                     Delay = (int)delay
