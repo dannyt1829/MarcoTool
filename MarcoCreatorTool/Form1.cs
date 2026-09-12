@@ -50,18 +50,21 @@ namespace MarcoCreatorTool
             // Play back the recorded actions
             foreach (var action in recordedActions)
             {
-                if (action.Type == ActionType.MouseClick)
+                await Task.Delay(action.Delay);
+                switch (action.Type)
                 {
-                    // Mouse click action
-                    await Task.Delay(action.Delay);
-                    InputSimulator.Click(action.X, action.Y);
-                }
-                else if (action.Type == ActionType.KeyPress)
-                {
-                    // Key press action
-                    await Task.Delay(action.Delay);
-                    InputSimulator.KeyPress(action.Key);
-
+                    case ActionType.MouseClick:
+                        InputSimulator.Click(action.X, action.Y);
+                        break;
+                    case ActionType.KeyPress:
+                        InputSimulator.KeyPress(action.Key);
+                        break;
+                    case ActionType.KeyDown:
+                        InputSimulator.KeyDown(action.Key);
+                        break;
+                    case ActionType.KeyUp:
+                        InputSimulator.KeyUp(action.Key);
+                        break;
                 }
             }
         }

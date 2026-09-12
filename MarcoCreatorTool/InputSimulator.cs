@@ -33,6 +33,20 @@ namespace MarcoCreatorTool
             keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
         }
 
+        public static void KeyDown(Keys key)
+        {
+            // Simulate key down
+            byte vk = (byte)key;
+            keybd_event(vk, 0, 0, 0);
+        }
+
+        public static void KeyUp(Keys key)
+        {
+            // Simulate key up
+            byte vk = (byte)key;
+            keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
+        }
+
         public static async Task Delay(int milliseconds)
         {
             await Task.Delay(milliseconds);

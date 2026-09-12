@@ -15,6 +15,9 @@ namespace MarcoCreatorTool
         private LowLevelKeyboardProc _keyboardProc;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_KEYDOWN = 0x0100;
+        private const int WH_KEYUP = 0x0101;
+        private const int WM_SYSKEYDOWN = 0x0104;
+        private const int WM_SYSKEYUP = 0x0105;
         private const int WH_MOUSE_LL = 14;
         private const int WM_LBUTTONDOWN = 0x0201;
 
@@ -22,6 +25,7 @@ namespace MarcoCreatorTool
         private IntPtr _mouseHookID = IntPtr.Zero;
 
         private uint _lastActionTime = 0;
+        private ActionType _actionType;
 
         // Stores mouse hook data
         [StructLayout(LayoutKind.Sequential)]
@@ -95,7 +99,7 @@ namespace MarcoCreatorTool
 
         private IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 && wParam == (IntPtr)WH_KEYDOWN)
+            if (nCode >= 0)
             {
                 KBDLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
                 Keys key = (Keys)hookInfo.vkCode;
@@ -103,17 +107,16 @@ namespace MarcoCreatorTool
                 uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
 
                 _lastActionTime = hookInfo.time;
+                _actionType = (wParam == (IntPtr)WH_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN) ? ActionType.KeyDown : ActionType.KeyUp;
 
                 _recordedActions.Add(new RecordedAction
                 {
-                    Type = ActionType.KeyPress,
+                    Type = _actionType,
                     Key = key,
                     Delay = (int)delay
                 });
-
-                MessageBox.Show($"Recorded: {key}");
             }
-            return CallNextHookEx(_mouseHookID, nCode, wParam, lParam);
+            return CallNextHookEx(_keyboardHookID, nCode, wParam, lParam);
         }
 
         private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)

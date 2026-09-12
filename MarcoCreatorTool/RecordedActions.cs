@@ -20,6 +20,10 @@ namespace MarcoCreatorTool
     {
         MouseClick,
         MouseMove,
-        KeyPress
+        KeyPress,
+        MouseDown,
+        MouseUp,
+        KeyDown,
+        KeyUp
     }
 }
