@@ -23,6 +23,7 @@ namespace MarcoCreatorTool
         private const int WM_LBUTTONUP = 0x0202;
         private const int WM_RBUTTONDOWN = 0x0204;
         private const int WM_RBUTTONUP = 0x0205;
+        private const int WM_MOUSEMOVE = 0x0200;
 
 
 
@@ -128,6 +129,7 @@ namespace MarcoCreatorTool
         { 
             if (nCode >= 0)
             {
+                System.Diagnostics.Debug.WriteLine($"Mouse event: {wParam}, lParam: {lParam}");
                 //TODO: Add mouse move, mouse wheel, and extra mouse events
 
                 MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
@@ -138,7 +140,14 @@ namespace MarcoCreatorTool
                 _actionType = (wParam == (IntPtr)WM_LBUTTONDOWN) ? ActionType.LMouseDown 
                             : (wParam == (IntPtr)WM_LBUTTONUP) ? ActionType.LMouseUp 
                             : (wParam == (IntPtr)WM_RBUTTONDOWN) ? ActionType.RMouseDown 
-                            : (wParam == (IntPtr)WM_RBUTTONUP) ? ActionType.RMouseUp : ActionType.Placeholder;
+                            : (wParam == (IntPtr)WM_RBUTTONUP) ? ActionType.RMouseUp 
+                            : (wParam == (IntPtr)WM_MOUSEMOVE) ? ActionType.MouseMove 
+                            : ActionType.Placeholder;
+                
+                if (_actionType == ActionType.MouseMove)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Mouse move event: X={hookInfo.pt.x}, Y={hookInfo.pt.y}, Delay={delay}");
+                }
 
                 _recordedActions.Add(new RecordedAction
                 {

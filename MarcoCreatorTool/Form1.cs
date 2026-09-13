@@ -77,6 +77,9 @@ namespace MarcoCreatorTool
                     case ActionType.RMouseUp:
                         InputSimulator.RMouseUp(action.X, action.Y);
                         break;
+                    case ActionType.MouseMove:
+                        InputSimulator.MoveMouse(action.X, action.Y);
+                        break;
                 }
             }
         }
