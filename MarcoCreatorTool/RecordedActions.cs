@@ -11,8 +11,7 @@ namespace MarcoCreatorTool
         // Coordinates for mouse actions
         public int X { get; set; }
         public int Y { get; set; }
-        // Delay in milliseconds
-        public int Delay { get; set; }
+        public double Time { get; set; }
         public Keys Key { get; set; }
     }
 

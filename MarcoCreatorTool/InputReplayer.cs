@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace MarcoCreatorTool
@@ -9,10 +10,11 @@ namespace MarcoCreatorTool
         public static async Task ReplayActions(List<RecordedAction> actions)
         {
             var actionsCopy = new List<RecordedAction>(actions);
+            var playclock = Stopwatch.StartNew();
 
             foreach (var action in actionsCopy)
             {
-                await Task.Delay(action.Delay);
+                InputSimulator.Delay(playclock, action.Time).Wait();
                 switch (action.Type)
                 {
                     case ActionType.MouseClick:

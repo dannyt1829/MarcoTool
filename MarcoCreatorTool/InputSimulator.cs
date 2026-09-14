@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -131,10 +132,20 @@ namespace MarcoCreatorTool
             keybd_event(vk, 0, KEYEVENTF_KEYUP, 0);
         }
 
-        public static async Task Delay(int milliseconds)
+        public static async Task Delay(Stopwatch clock, double targetMs)
         {
-            // TODO: Replace with accurate timing mechanism
-            await Task.Delay(milliseconds);
+            double remainingTime = targetMs - clock.Elapsed.TotalMilliseconds;
+            while (remainingTime > 2)
+            {
+                Thread.Sleep(1);
+                remainingTime = targetMs - clock.Elapsed.TotalMilliseconds;
+            }
+            
+            var spinner = new SpinWait();
+            while (clock.Elapsed.TotalMilliseconds < targetMs)
+            {
+                spinner.SpinOnce();
+            }
         }
     }
 }

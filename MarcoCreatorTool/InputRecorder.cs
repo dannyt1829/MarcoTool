@@ -13,6 +13,7 @@ namespace MarcoCreatorTool
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
         private LowLevelMouseProc _mouseProc;
         private LowLevelKeyboardProc _keyboardProc;
+        private Stopwatch _recordClock;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_KEYDOWN = 0x0100;
         private const int WH_KEYUP = 0x0101;
@@ -24,8 +25,6 @@ namespace MarcoCreatorTool
         private const int WM_RBUTTONDOWN = 0x0204;
         private const int WM_RBUTTONUP = 0x0205;
         private const int WM_MOUSEMOVE = 0x0200;
-
-
 
         private IntPtr _keyboardHookID = IntPtr.Zero;
         private IntPtr _mouseHookID = IntPtr.Zero;
@@ -82,6 +81,7 @@ namespace MarcoCreatorTool
             _recordedActions.Clear();
             _keyboardProc = KeyboardHookCallback;
             _mouseProc = MouseHookCallback;
+            _recordClock = Stopwatch.StartNew();
 
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
@@ -110,8 +110,6 @@ namespace MarcoCreatorTool
                 KBDLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
                 Keys key = (Keys)hookInfo.vkCode;
 
-                uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
-
                 _lastActionTime = hookInfo.time;
                 _actionType = (wParam == (IntPtr)WH_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN) ? ActionType.KeyDown : ActionType.KeyUp;
 
@@ -119,7 +117,7 @@ namespace MarcoCreatorTool
                 {
                     Type = _actionType,
                     Key = key,
-                    Delay = (int)delay
+                    Time = _recordClock.Elapsed.TotalMilliseconds,
                 });
             }
             return CallNextHookEx(_keyboardHookID, nCode, wParam, lParam);
@@ -130,11 +128,7 @@ namespace MarcoCreatorTool
             if (nCode >= 0)
             {
                 //TODO: Add mouse move, mouse wheel, and extra mouse events
-
                 MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-
-                //TODO: Change timer not to be reliant on the hookInfo.time
-                uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
 
                 _lastActionTime = hookInfo.time;
                 _actionType = (wParam == (IntPtr)WM_LBUTTONDOWN) ? ActionType.LMouseDown 
@@ -146,7 +140,7 @@ namespace MarcoCreatorTool
                 
                 if (_actionType == ActionType.MouseMove)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Mouse move event: X={hookInfo.pt.x}, Y={hookInfo.pt.y}, Delay={delay}");
+                    System.Diagnostics.Debug.WriteLine($"Mouse move event: X={hookInfo.pt.x}, Y={hookInfo.pt.y}, Delay={_recordClock.Elapsed.TotalMilliseconds}");
                 }
 
                 _recordedActions.Add(new RecordedAction
@@ -154,7 +148,7 @@ namespace MarcoCreatorTool
                     Type = _actionType,
                     X = hookInfo.pt.x,
                     Y = hookInfo.pt.y,
-                    Delay = (int)delay
+                    Time = _recordClock.Elapsed.TotalMilliseconds,
                 });
             }
 
