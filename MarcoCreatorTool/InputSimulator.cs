@@ -133,6 +133,7 @@ namespace MarcoCreatorTool
 
         public static async Task Delay(int milliseconds)
         {
+            // TODO: Replace with accurate timing mechanism
             await Task.Delay(milliseconds);
         }
     }

@@ -129,11 +129,11 @@ namespace MarcoCreatorTool
         { 
             if (nCode >= 0)
             {
-                System.Diagnostics.Debug.WriteLine($"Mouse event: {wParam}, lParam: {lParam}");
                 //TODO: Add mouse move, mouse wheel, and extra mouse events
 
                 MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
 
+                //TODO: Change timer not to be reliant on the hookInfo.time
                 uint delay = (_lastActionTime == 0) ? 0 : (hookInfo.time - _lastActionTime);
 
                 _lastActionTime = hookInfo.time;
