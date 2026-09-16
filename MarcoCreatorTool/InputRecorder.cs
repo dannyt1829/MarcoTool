@@ -24,6 +24,7 @@ namespace MarcoCreatorTool
         private const int WM_RBUTTONUP = 0x0205;
         private const int WM_MOUSEMOVE = 0x0200;
         private const int WM_MOUSEWHEEL = 0x020A;
+        private const int WM_MOUSEHWHEEL = 0x020E;
 
         private IntPtr _keyboardHookID = IntPtr.Zero;
         private IntPtr _mouseHookID = IntPtr.Zero;
@@ -123,24 +124,25 @@ namespace MarcoCreatorTool
         }
 
         private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-        { 
+        {
             if (nCode >= 0)
             {
                 //TODO: Add mouse move, mouse wheel, and extra mouse events
                 MSLLHOOKSTRUCT hookInfo = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
 
                 _lastActionTime = hookInfo.time;
-                _actionType = (wParam == (IntPtr)WM_LBUTTONDOWN) ? ActionType.LMouseDown 
-                            : (wParam == (IntPtr)WM_LBUTTONUP) ? ActionType.LMouseUp 
-                            : (wParam == (IntPtr)WM_RBUTTONDOWN) ? ActionType.RMouseDown 
-                            : (wParam == (IntPtr)WM_RBUTTONUP) ? ActionType.RMouseUp 
-                            : (wParam == (IntPtr)WM_MOUSEMOVE) ? ActionType.MouseMove 
+                _actionType = (wParam == (IntPtr)WM_LBUTTONDOWN) ? ActionType.LMouseDown
+                            : (wParam == (IntPtr)WM_LBUTTONUP) ? ActionType.LMouseUp
+                            : (wParam == (IntPtr)WM_RBUTTONDOWN) ? ActionType.RMouseDown
+                            : (wParam == (IntPtr)WM_RBUTTONUP) ? ActionType.RMouseUp
+                            : (wParam == (IntPtr)WM_MOUSEMOVE) ? ActionType.MouseMove
                             : (wParam == (IntPtr)WM_MOUSEWHEEL) ? ActionType.MouseWheel
+                            : (wParam == (IntPtr)WM_MOUSEHWHEEL) ? ActionType.HMouseWheel
                             : ActionType.Placeholder;
-                
-                if (_actionType == ActionType.MouseMove)
+
+                if (_actionType == ActionType.MouseWheel || _actionType == ActionType.HMouseWheel)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Mouse move event: X={hookInfo.pt.x}, Y={hookInfo.pt.y}, Delay={_recordClock.Elapsed.TotalMilliseconds}");
+                    System.Diagnostics.Debug.WriteLine($"Mouse wheel event: Delta={(short)((hookInfo.mouseData >> 16) & 0xffff)}");
                 }
 
                 _recordedActions.Add(new RecordedAction
@@ -149,6 +151,7 @@ namespace MarcoCreatorTool
                     X = hookInfo.pt.x,
                     Y = hookInfo.pt.y,
                     Time = _recordClock.Elapsed.TotalMilliseconds,
+                    MouseWheelDelta = (wParam == (IntPtr)WM_MOUSEWHEEL || wParam == (IntPtr)WM_MOUSEHWHEEL) ? (short)((hookInfo.mouseData >> 16) & 0xffff) : 0
                 });
             }
 

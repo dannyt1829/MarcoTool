@@ -13,6 +13,7 @@ namespace MarcoCreatorTool
         public int Y { get; set; }
         public double Time { get; set; }
         public Keys Key { get; set; }
+        public int MouseWheelDelta { get; set; }
     }
 
     public enum ActionType

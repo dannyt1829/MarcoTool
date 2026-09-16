@@ -16,6 +16,8 @@ namespace MarcoCreatorTool
         private const uint KEYEVENTF_KEYDOWN = 0x0000;
         private const uint MOUSEEVENTF_MOVE = 0x0001;
         private const uint MOUSEEVENTF_ABSOLUTE = 0x8000;
+        private const uint MOUSEEVENTF_WHEEL = 0x0800;
+        private const uint MOUSEEVENTF_HWHEEL = 0x01000;
 
         [DllImport("user32.dll")]
         private static extern bool mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
@@ -273,7 +275,51 @@ namespace MarcoCreatorTool
         public static void MouseWheel(int delta)
         {
             // Simulate mouse wheel scroll
-            mouse_event(0x0800, 0, 0, (uint)delta, UIntPtr.Zero);
+            INPUT[] inputs = new INPUT[1];
+            inputs[0] = new INPUT
+            {
+                type = 0, // Input type: mouse
+                u = new InputUnion
+                {
+                    mi = new MOUSEINPUT
+                    {
+                        dx = 0,
+                        dy = 0,
+                        mouseData = (uint)delta,
+                        dwFlags = MOUSEEVENTF_WHEEL,
+                        time = 0,
+                        dwExtraInfo = IntPtr.Zero
+                    }
+                }
+            };
+
+            SendInput(1, inputs, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+        public static void MouseHWheel(int delta)
+        {
+            // Simulate mouse wheel scroll
+            System.Diagnostics.Debug.WriteLine($"MouseHWheel: {delta}");
+
+            INPUT[] inputs = new INPUT[1];
+            inputs[0] = new INPUT
+            {
+                type = 0, // Input type: mouse
+                u = new InputUnion
+                {
+                    mi = new MOUSEINPUT
+                    {
+                        dx = 0,
+                        dy = 0,
+                        mouseData = (uint)delta,
+                        dwFlags = MOUSEEVENTF_HWHEEL,
+                        time = 0,
+                        dwExtraInfo = IntPtr.Zero
+                    }
+                }
+            };
+
+            SendInput(1, inputs, Marshal.SizeOf(typeof(INPUT)));
         }
 
 

@@ -39,7 +39,10 @@ namespace MarcoCreatorTool
                         InputSimulator.MoveMouse(action.X, action.Y);
                         break;
                     case ActionType.MouseWheel:
-                        InputSimulator.MouseWheel((int)action.Y); // Assuming Y holds the wheel delta
+                        InputSimulator.MouseWheel(action.MouseWheelDelta);
+                        break;
+                    case ActionType.HMouseWheel:
+                        InputSimulator.MouseHWheel(action.MouseWheelDelta); 
                         break;
                 }
             }
