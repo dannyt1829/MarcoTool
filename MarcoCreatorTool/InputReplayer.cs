@@ -17,12 +17,6 @@ namespace MarcoCreatorTool
                 InputSimulator.Delay(playclock, action.Time).Wait();
                 switch (action.Type)
                 {
-                    case ActionType.MouseClick:
-                        InputSimulator.Click(action.X, action.Y);
-                        break;
-                    case ActionType.KeyPress:
-                        InputSimulator.KeyPress(action.Key);
-                        break;
                     case ActionType.KeyDown:
                         InputSimulator.KeyDown(action.Key);
                         break;
@@ -43,6 +37,9 @@ namespace MarcoCreatorTool
                         break;
                     case ActionType.MouseMove:
                         InputSimulator.MoveMouse(action.X, action.Y);
+                        break;
+                    case ActionType.MouseWheel:
+                        InputSimulator.MouseWheel((int)action.Y); // Assuming Y holds the wheel delta
                         break;
                 }
             }

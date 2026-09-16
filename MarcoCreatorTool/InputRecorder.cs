@@ -16,15 +16,14 @@ namespace MarcoCreatorTool
         private Stopwatch _recordClock;
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_KEYDOWN = 0x0100;
-        private const int WH_KEYUP = 0x0101;
         private const int WM_SYSKEYDOWN = 0x0104;
-        private const int WM_SYSKEYUP = 0x0105;
         private const int WH_MOUSE_LL = 14;
         private const int WM_LBUTTONDOWN = 0x0201;
         private const int WM_LBUTTONUP = 0x0202;
         private const int WM_RBUTTONDOWN = 0x0204;
         private const int WM_RBUTTONUP = 0x0205;
         private const int WM_MOUSEMOVE = 0x0200;
+        private const int WM_MOUSEWHEEL = 0x020A;
 
         private IntPtr _keyboardHookID = IntPtr.Zero;
         private IntPtr _mouseHookID = IntPtr.Zero;
@@ -136,6 +135,7 @@ namespace MarcoCreatorTool
                             : (wParam == (IntPtr)WM_RBUTTONDOWN) ? ActionType.RMouseDown 
                             : (wParam == (IntPtr)WM_RBUTTONUP) ? ActionType.RMouseUp 
                             : (wParam == (IntPtr)WM_MOUSEMOVE) ? ActionType.MouseMove 
+                            : (wParam == (IntPtr)WM_MOUSEWHEEL) ? ActionType.MouseWheel
                             : ActionType.Placeholder;
                 
                 if (_actionType == ActionType.MouseMove)

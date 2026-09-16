@@ -24,6 +24,10 @@ namespace MarcoCreatorTool
         LMouseUp,
         RMouseDown,
         RMouseUp,
+        MMouseDown,
+        MMouseUp,
+        MouseWheel,
+        HMouseWheel,
         KeyDown,
         KeyUp,
         Placeholder // Placeholder for future action types
