@@ -50,5 +50,15 @@ namespace MarcoCreatorTool
             // Play back the recorded actions
             await InputReplayer.ReplayActions(recordedActions);
         }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            InputSaver.Save(recordedActions, "recorded_actions.json");
+        }
+
+        private void loadButton_Click(object sender, EventArgs e)
+        {
+            recordedActions = InputSaver.Load("recorded_actions.json");
+        }
     }
 }

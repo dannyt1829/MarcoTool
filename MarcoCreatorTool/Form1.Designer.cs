@@ -30,6 +30,8 @@
         {
             recordButton = new Button();
             play = new Button();
+            saveButton = new Button();
+            loadButton = new Button();
             SuspendLayout();
             // 
             // recordButton
@@ -52,12 +54,34 @@
             play.UseVisualStyleBackColor = true;
             play.Click += play_Click;
             // 
+            // saveButton
+            // 
+            saveButton.Location = new Point(174, 12);
+            saveButton.Name = "saveButton";
+            saveButton.Size = new Size(75, 75);
+            saveButton.TabIndex = 2;
+            saveButton.Text = "Save";
+            saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += saveButton_Click;
+            // 
+            // loadButton
+            // 
+            loadButton.Location = new Point(255, 12);
+            loadButton.Name = "loadButton";
+            loadButton.Size = new Size(75, 75);
+            loadButton.TabIndex = 3;
+            loadButton.Text = "Load";
+            loadButton.UseVisualStyleBackColor = true;
+            loadButton.Click += loadButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(354, 99);
+            Controls.Add(loadButton);
+            Controls.Add(saveButton);
             Controls.Add(play);
             Controls.Add(recordButton);
             Name = "Form1";
@@ -71,5 +95,7 @@
         private Button recordButton;
         private Button play;
         private Button button1;
+        private Button saveButton;
+        private Button loadButton;
     }
 }
